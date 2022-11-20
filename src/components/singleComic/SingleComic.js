@@ -14,7 +14,7 @@ const SingleComic = () => {
             </div>
             <a href="#" className="single-comic__back">Back to all</a>
         </div>
-    )
+    );
 }
 
 export default SingleComic;
