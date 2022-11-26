@@ -1,4 +1,5 @@
 import { Component } from 'react';
+import PropTypes from 'prop-types';
 
 import Spinner from '../../resources/spinner/Spinner';
 import ErrorMesage from '../../resources/errorMessage/ErrorMessage';
@@ -122,6 +123,14 @@ class CharInfo extends Component {
             </div>
         );
     }
+}
+
+CharInfo.propTypes = {
+    charId: PropTypes.number
+}
+
+CharInfo.defaultProps = {
+    charId: null
 }
 
 export default CharInfo;
