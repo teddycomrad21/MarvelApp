@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 
 import './charList.scss';
@@ -7,7 +7,7 @@ import Spinner from '../../resources/spinner/Spinner';
 
 const marvelService = new MarvelService();
 
-const CharList = ({ onCharSelected }) => {
+const CharList = ({ onCharSelected, charId }) => {
     const [characterBundle, setCharacterBundle] = useState([]);
     const [offset, setOffset] = useState(210);
     const [characterEnded, setCharacterEnded] = useState(false);
@@ -49,11 +49,11 @@ const CharList = ({ onCharSelected }) => {
 
         return (
             <li
-                className="char__item"
+                className={`${"char__item"} ${charId === id ? "active" : ''}`}
                 key={id}
                 onClick={() => onCharSelected(id)}
             >
-                <img src={thumbnail} alt="abyss"/>
+                <img src={thumbnail} alt={name}/>
                 <div className="char__name">{name}</div>
             </li>
         );
@@ -82,7 +82,12 @@ const CharList = ({ onCharSelected }) => {
 }
 
 CharList.propTypes = {
-    onCharSelected: PropTypes.func.isRequired
+    onCharSelected: PropTypes.func.isRequired,
+    charId: PropTypes.number
+}
+
+CharList.defaultProps = {
+    charId: null
 }
 
 export default CharList;
