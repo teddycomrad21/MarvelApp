@@ -5,7 +5,6 @@ import ErrorMesage from '../../resources/errorMessage/ErrorMessage';
 import Skeleton from '../skeleton/Skeleton';
 import MarvelService from '../../services/MarvelService';
 import './charInfo.scss';
-import thor from '../../resources/img/thor.jpeg';
 
 const View = ({ char }) => {
     const { name, description, thumbnail, homepage, wiki, comics } = char;
@@ -68,6 +67,9 @@ class CharInfo extends Component {
         if (this.props.charId !== prevProps.charId) {
             this.updateChar();
         }
+
+        // Uncomment below line to throw error
+        // this.foo.bar = 1;
     }
 
     updateChar = () => {
