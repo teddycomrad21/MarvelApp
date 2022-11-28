@@ -2,51 +2,54 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import './charList.scss';
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 import Spinner from '../../resources/spinner/Spinner';
+import ErrorMessage from '../../resources/errorMessage/ErrorMessage';
 
 const CharList = ({ onCharSelected, charId }) => {
-    const marvelService = new MarvelService();
+    const { loading, error, getAllCharacters } = useMarvelService();
 
     const [characterBundle, setCharacterBundle] = useState([]);
     const [offset, setOffset] = useState(210);
     const [characterEnded, setCharacterEnded] = useState(false);
-    const [loading, setLoading] = useState(true);
     const [newCharsLoading, setNewCharsLoading] = useState(false);
     
-    const spinner = loading ? <Spinner /> : null;
+    const spinner = loading && !newCharsLoading ? <Spinner /> : null;
+    const errorMessage = error ? <ErrorMessage/> : null;
 
     useEffect(() => {
-        marvelService.getAllCharacters()
-        .then(response => {
-            setCharacterBundle(response)
-            setLoading(false)
-        })
-        .catch(error => console.log(error));
+        onRequest(true);
         // eslint-disable-next-line
     }, []);
+
+    const onRequest = (initial) => {
+        initial ? setNewCharsLoading(false) : setNewCharsLoading(true);
+
+        getAllCharacters()
+            .then(response => {
+                setCharacterBundle(response)
+            });
+    };
 
     const loadMoreCharacters = (offset) => {
         setNewCharsLoading(true);
         setOffset(offset = offset + 9);
 
-        marvelService.getAllCharacters(offset)
-        .then(response => {
-            if (response.length < 9) {
-                setCharacterEnded(true);
-            }
+        getAllCharacters(offset)
+            .then(response => {
+                if (response.length < 9) {
+                    setCharacterEnded(true);
+                }
 
-            setCharacterBundle((prevState) => ([
-                ...prevState, ...response
-            ]));
-            setLoading(false);
-            setNewCharsLoading(false);
-        })
-        .catch(error => console.log(error));
+                setCharacterBundle((prevState) => ([
+                    ...prevState, ...response
+                ]));
+                setNewCharsLoading(false);
+            });
     };
 
     const createCharacter = (char) => {
-        const {name, thumbnail, id} = char;
+        const { name, thumbnail, id } = char;
 
         return (
             <li
@@ -62,9 +65,9 @@ const CharList = ({ onCharSelected, charId }) => {
 
     return (
         <div className="char__list">
-            <ul className="char__grid" style={loading ? {display: 'block'} : {display: 'grid'}}>
-
-                {spinner}
+            {errorMessage}
+            {spinner}
+            <ul className="char__grid">
 
                 {characterBundle?.map(char => createCharacter(char))}
 

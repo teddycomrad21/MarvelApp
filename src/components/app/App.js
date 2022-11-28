@@ -14,9 +14,13 @@ const App = () => {
         <div className="app">
             <AppHeader />
             <main>
-                <RandomChar />
+                <ErrorBoundary>
+                    <RandomChar />
+                </ErrorBoundary>
                 <div className="char__content">
-                    <CharList onCharSelected={setSelectedChar} charId={selectedChar} />
+                    <ErrorBoundary>
+                        <CharList onCharSelected={setSelectedChar} charId={selectedChar} />
+                    </ErrorBoundary>
                     <ErrorBoundary>
                         <CharInfo charId={selectedChar} />
                     </ErrorBoundary>

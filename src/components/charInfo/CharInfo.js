@@ -5,15 +5,13 @@ import CharInfoContent from './CharInfoContent';
 import Spinner from '../../resources/spinner/Spinner';
 import ErrorMesage from '../../resources/errorMessage/ErrorMessage';
 import Skeleton from '../skeleton/Skeleton';
-import MarvelService from '../../services/MarvelService';
+import useMarvelService from '../../services/MarvelService';
 import './charInfo.scss';
 
 const CharInfo = ({ charId }) => {
-    const marvelService = new MarvelService();
+    const { loading, error, getCharacter, clearError } = useMarvelService();
     
     const [char, setChar] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(false);
 
     const skeleton = char || loading || error ? null : <Skeleton />;
     const errorMessage = error ? <ErrorMesage /> : null;
@@ -21,18 +19,15 @@ const CharInfo = ({ charId }) => {
     const content = !(error || loading || !char) ? <CharInfoContent char={char} /> : null;
 
     const updateChar = () => {
+        clearError();
+
         if (!charId) return;
 
-        setLoading(true);
-
-        marvelService
-            .getCharacter(charId)
+        getCharacter(charId)
             .then((response => {
                 setChar(response);
-                setLoading(false);
-            }))
-            .catch(error => setError(error));
-    }
+            }));
+    };
 
     useEffect(() => {
         updateChar();
