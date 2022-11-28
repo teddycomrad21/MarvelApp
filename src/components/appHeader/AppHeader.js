@@ -51,6 +51,6 @@ const AppHeader = () => {
             </nav>
         </header>
     );
-}
+};
 
 export default AppHeader;

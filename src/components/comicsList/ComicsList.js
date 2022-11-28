@@ -68,6 +68,6 @@ const ComicsList = () => {
             </button>
         </div>
     );
-}
+};
 
 export default ComicsList;

@@ -1,13 +1,13 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import './charList.scss';
 import MarvelService from '../../services/MarvelService';
 import Spinner from '../../resources/spinner/Spinner';
 
-const marvelService = new MarvelService();
-
 const CharList = ({ onCharSelected, charId }) => {
+    const marvelService = new MarvelService();
+
     const [characterBundle, setCharacterBundle] = useState([]);
     const [offset, setOffset] = useState(210);
     const [characterEnded, setCharacterEnded] = useState(false);
@@ -23,6 +23,7 @@ const CharList = ({ onCharSelected, charId }) => {
             setLoading(false)
         })
         .catch(error => console.log(error));
+        // eslint-disable-next-line
     }, []);
 
     const loadMoreCharacters = (offset) => {
@@ -79,15 +80,15 @@ const CharList = ({ onCharSelected, charId }) => {
             )}
         </div>
     );
-}
+};
 
 CharList.propTypes = {
     onCharSelected: PropTypes.func.isRequired,
     charId: PropTypes.number
-}
+};
 
 CharList.defaultProps = {
     charId: null
-}
+};
 
 export default CharList;
