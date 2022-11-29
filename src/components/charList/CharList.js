@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
-import './charList.scss';
 import useMarvelService from '../../services/MarvelService';
 import Spinner from '../../resources/spinner/Spinner';
 import ErrorMessage from '../../resources/errorMessage/ErrorMessage';
+
+import './charList.scss';
 
 const CharList = ({ onCharSelected, charId }) => {
     const { loading, error, getAllCharacters } = useMarvelService();
@@ -15,7 +16,7 @@ const CharList = ({ onCharSelected, charId }) => {
     const [newCharsLoading, setNewCharsLoading] = useState(false);
     
     const spinner = loading && !newCharsLoading ? <Spinner /> : null;
-    const errorMessage = error ? <ErrorMessage/> : null;
+    const errorMessage = error ? <ErrorMessage /> : null;
 
     useEffect(() => {
         onRequest(true);

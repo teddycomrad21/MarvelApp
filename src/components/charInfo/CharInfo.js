@@ -6,6 +6,7 @@ import Spinner from '../../resources/spinner/Spinner';
 import ErrorMesage from '../../resources/errorMessage/ErrorMessage';
 import Skeleton from '../skeleton/Skeleton';
 import useMarvelService from '../../services/MarvelService';
+
 import './charInfo.scss';
 
 const CharInfo = ({ charId }) => {
