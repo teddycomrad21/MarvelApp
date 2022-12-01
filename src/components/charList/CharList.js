@@ -18,8 +18,6 @@ const CharList = ({ onCharSelected, charId }) => {
     const spinner = loading && !newCharsLoading ? <Spinner /> : null;
     const errorMessage = error ? <ErrorMessage /> : null;
 
-    console.log('render');
-
     useEffect(() => {
         onRequest(true);
         // eslint-disable-next-line
