@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const RandomCharContent = ({ char }) => {
-    const { name, description, thumbnail, homepage, wiki } = char;
+const RandomCharContent = ({ data }) => {
+    const { name, description, thumbnail, homepage, wiki } = data;
 
     return (
         <div className="randomchar__block">
@@ -32,11 +32,11 @@ const RandomCharContent = ({ char }) => {
 };
 
 RandomCharContent.propTypes = {
-    charId: PropTypes.object
+    data: PropTypes.object
 };
 
 RandomCharContent.defaultProps = {
-    charId: {}
+    data: {}
 };
 
 export default RandomCharContent;

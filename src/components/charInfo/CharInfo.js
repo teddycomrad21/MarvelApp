@@ -2,45 +2,40 @@ import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import CharInfoContent from './CharInfoContent';
-import Spinner from '../../resources/spinner/Spinner';
-import ErrorMesage from '../../resources/errorMessage/ErrorMessage';
-import Skeleton from '../skeleton/Skeleton';
+import { setContent } from '../../utils/setContent';
 import useMarvelService from '../../services/MarvelService';
 
 import './charInfo.scss';
 
-const CharInfo = ({ charId }) => {
-    const { loading, error, getCharacter, clearError } = useMarvelService();
+const CharInfo = (props) => {
+    const { getCharacter, clearError, process, setProcess } = useMarvelService();
     
     const [char, setChar] = useState(null);
-
-    const skeleton = char || loading || error ? null : <Skeleton />;
-    const errorMessage = error ? <ErrorMesage /> : null;
-    const spinner = loading ? <Spinner /> : null;
-    const content = !(error || loading || !char) ? <CharInfoContent char={char} /> : null;
-
-    const updateChar = () => {
-        clearError();
-
-        if (!charId) return;
-
-        getCharacter(charId)
-            .then((response => {
-                setChar(response);
-            }));
-    };
 
     useEffect(() => {
         updateChar();
         // eslint-disable-next-line
-    }, [charId]);
+    }, [props.charId])
+
+    const updateChar = () => {
+        const { charId } = props;
+
+        if (!charId) return;
+
+        clearError();
+
+        getCharacter(charId)
+            .then(onCharLoaded)
+            .then(() => setProcess('confirmed'));
+    }
+
+    const onCharLoaded = (char) => {
+        setChar(char);
+    };
 
     return (
         <div className="char__info">
-            {skeleton}
-            {errorMessage}
-            {spinner}
-            {content}
+            {setContent(process, CharInfoContent, char)}
         </div>
     );
 };

@@ -1,34 +1,30 @@
 import React, { useState, useEffect } from 'react';
 
-import Spinner from '../../resources/spinner/Spinner';
-import ErrorMessage from '../../resources/errorMessage/ErrorMessage';
+import { setSpinnerAndError } from '../../utils/setContent';
 import useMarvelService from '../../services/MarvelService';
 
 import './singleComic.scss';
 
 const SingleComic = ({ toggleAndShowComic, comicId }) => {
-    const { loading, error, getComic } = useMarvelService();
+    const { loading, error, getComic, process, setProcess } = useMarvelService();
 
     const [comic, setComic] = useState({});
-
-    const spinner = loading ? <Spinner /> : null;
-    const errorMessage = error ? <ErrorMessage /> : null;
 
     const { name, description, pageCount, price, language, thumbnail } = comic;
 
     useEffect(() => {
         getComic(comicId)
-            .then(response => setComic(response));
+            .then(response => setComic(response))
+            .then(() => setProcess('confirmed'));
     }, []);
     
 
     return (
         <div className={`single-comic ${loading ? 'loading' : null}`}>
             
-            {spinner}
-            {errorMessage}
+            {setSpinnerAndError(process)}
 
-            {!spinner && !errorMessage && (
+            {!loading && !error && (
                 <>
                     <img src={thumbnail} alt="x-men" className="single-comic__img"/>
 

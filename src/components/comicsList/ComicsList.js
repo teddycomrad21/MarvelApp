@@ -1,14 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 import SingleComic from '../singleComic/SingleComic';
-import Spinner from '../../resources/spinner/Spinner';
-import ErrorMessage from '../../resources/errorMessage/ErrorMessage';
+import { setSpinnerAndError } from '../../utils/setContent';
 import useMarvelService from '../../services/MarvelService';
 
 import './comicsList.scss';
 
 const ComicsList = () => {
-    const { loading, error, getAllComics } = useMarvelService();
+    const { getAllComics, process, setProcess } = useMarvelService();
 
     const [comicsList, setComicsList] = useState([]);
     const [comicId, setComicId] = useState();
@@ -17,12 +16,10 @@ const ComicsList = () => {
     const [newComicsLoading, setnewComicsLoading] = useState(false);
     const [comicsEnded, setComicsEnded] = useState(false);
 
-    const spinner = loading ? <Spinner /> : null;
-    const errorMessage = error ? <ErrorMessage /> : null;
-
     useEffect(() => {
         getAllComics(offset)
-            .then(response => setComicsList(response));
+            .then(response => setComicsList(response))
+            .then(() => setProcess('confirmed'));
     }, []);
 
     const toggleAndShowComic = (id) => {
@@ -44,7 +41,8 @@ const ComicsList = () => {
                     ...prevState, ...response
                 ]));
                 setnewComicsLoading(false);
-            });
+            })
+            .then(() => setProcess('confirmed'));
     };
 
     const createComics = (comics, index) => {
@@ -63,8 +61,7 @@ const ComicsList = () => {
 
     return (
         <>
-            {spinner}
-            {errorMessage}
+            {setSpinnerAndError(process)}
 
             {!showComic ? (
                 <div className="comics__list">

@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-const CharInfoContent = ({ char }) => {
-    const { name, description, thumbnail, homepage, wiki, comics } = char;
+const CharInfoContent = ({ data }) => {
+    const { name, description, thumbnail, homepage, wiki, comics } = data;
 
     const hasComics = comics.length !== 0;
     const availableComics = comics.slice(0, 10);
@@ -46,11 +46,11 @@ const CharInfoContent = ({ char }) => {
 };
 
 CharInfoContent.propTypes = {
-    charId: PropTypes.object
+    data: PropTypes.object
 };
 
 CharInfoContent.defaultProps = {
-    charId: {}
+    data: {}
 };
 
 export default CharInfoContent;

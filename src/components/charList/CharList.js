@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
+import { setSpinnerAndError } from '../../utils/setContent';
 import useMarvelService from '../../services/MarvelService';
-import Spinner from '../../resources/spinner/Spinner';
-import ErrorMessage from '../../resources/errorMessage/ErrorMessage';
 
 import './charList.scss';
 
 const CharList = ({ onCharSelected, charId }) => {
-    const { loading, error, getAllCharacters } = useMarvelService();
+    const { getAllCharacters, process, setProcess } = useMarvelService();
 
     const [characterBundle, setCharacterBundle] = useState([]);
     const [offset, setOffset] = useState(210);
     const [characterEnded, setCharacterEnded] = useState(false);
     const [newCharsLoading, setNewCharsLoading] = useState(false);
-    
-    const spinner = loading && !newCharsLoading ? <Spinner /> : null;
-    const errorMessage = error ? <ErrorMessage /> : null;
 
     useEffect(() => {
         onRequest(true);
@@ -29,7 +25,8 @@ const CharList = ({ onCharSelected, charId }) => {
         getAllCharacters()
             .then(response => {
                 setCharacterBundle(response)
-            });
+            })
+            .then(() => setProcess('confirmed'));
     };
 
     const loadMoreCharacters = (offset) => {
@@ -46,7 +43,8 @@ const CharList = ({ onCharSelected, charId }) => {
                     ...prevState, ...response
                 ]));
                 setNewCharsLoading(false);
-            });
+            })
+            .then(() => setProcess('confirmed'));
     };
 
     const createCharacter = (char) => {
@@ -66,8 +64,9 @@ const CharList = ({ onCharSelected, charId }) => {
 
     return (
         <div className="char__list">
-            {errorMessage}
-            {spinner}
+
+            {setSpinnerAndError(process)}
+
             <ul className="char__grid">
 
                 {characterBundle?.map(char => createCharacter(char))}
