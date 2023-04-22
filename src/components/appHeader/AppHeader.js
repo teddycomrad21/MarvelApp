@@ -1,38 +1,11 @@
+import React from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
 import { createUseStyles } from 'react-jss';
-import './appHeader.scss';
 
-const useStyles = createUseStyles({
-    header: {
-        display: 'flex',
-        justifyContent: 'space-between'
-    },
-    title: {
-        fontWeight: 'bold',
-        fontSize: 28,
+import styles from './appHeader.styles';
 
-        '& span': {
-            color: '#9F0013'
-        }
-    },
-    menu: {
-        '& ul': {
-            display: 'flex',
-            justifyContent: 'space-between',
-            fontWeight: 'bold',
-            fintSize: 24,
-
-            '& li': {
-                margin: [0, 8],
-
-                '&:hover': {
-                    color: '#9F0013'
-                }
-            }
-        }
-    }
-});
+const useStyles = createUseStyles(styles);
 
 const AppHeader = () => {
     const classes = useStyles();

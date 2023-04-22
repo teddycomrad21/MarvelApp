@@ -4,12 +4,16 @@ import RandomCharContent from './RandomCharContent';
 import { setContent } from '../../utils/setContent';
 import useMarvelService from '../../services/MarvelService';
 
-import './randomChar.scss';
+import { createUseStyles } from 'react-jss';
+
+import styles from './randomChar.styles';
 import mjolnir from '../../resources/img/mjolnir.png';
 
-const RandomChar = () => {
-    const { getCharacter, clearError, process, setProcess } = useMarvelService();
+const useStyles = createUseStyles(styles);
 
+const RandomChar = () => {
+    const classes = useStyles();
+    const { getCharacter, clearError, process, setProcess } = useMarvelService();
     const [char, setChar] = useState({});
 
     const updateChar = () => {
@@ -21,31 +25,31 @@ const RandomChar = () => {
             .then(response => {
                 setChar(response);
             })
-            .then(() => setProcess('confirmed'));
+            .then(() => setProcess('confirmed'))
+            .catch(error => console.log(error));
     };
 
     useEffect(() => {
         updateChar();
-        // eslint-disable-next-line
     }, []);
 
     return (
-        <div className="randomchar">
+        <div className={classes.randomChar}>
 
             {setContent(process, RandomCharContent, char)}
 
-            <div className="randomchar__static">
-                <p className="randomchar__title">
+            <div className={classes.static}>
+                <p className={classes.title}>
                     Random character for today!<br/>
                     Do you want to get to know him better?
                 </p>
-                <p className="randomchar__title">
+                <p className={classes.title}>
                     Or choose another one
                 </p>
                 <button className="button button__main" onClick={updateChar}>
                     <div className="inner">try it</div>
                 </button>
-                <img src={mjolnir} alt="mjolnir" className="randomchar__decoration"/>
+                <img src={mjolnir} alt="mjolnir" className={classes.decoration}/>
             </div>
         </div>
     );

@@ -1,24 +1,31 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
+import { createUseStyles } from 'react-jss';
+
+import styles from './randomChar.styles';
+
+const useStyles = createUseStyles(styles);
+
 const RandomCharContent = ({ data }) => {
+    const classes = useStyles();
     const { name, description, thumbnail, homepage, wiki } = data;
 
     return (
-        <div className="randomchar__block">
+        <div className={classes.block}>
             <img
                 src={thumbnail}
                 alt="Random character"
-                className="randomchar__img"
+                className={classes.img}
                 style={!thumbnail ? {objectFit: 'cover'} : {objectFit: 'contain'}}
             />
-            <div className="randomchar__info">
-                <p className="randomchar__name">{name}</p>
-                <p className="randomchar__descr">
+            <div className={classes.info}>
+                <p className={classes.name}>{name}</p>
+                <p className={classes.descr}>
                     {!description && 'There is no desription for the current character.'}
                     {description?.length > 211 ? description.slice(0, 212) + '...' : description}
                 </p>
-                <div className="randomchar__btns">
+                <div className={classes.btns}>
                     <a href={homepage} className="button button__main">
                         <div className="inner">homepage</div>
                     </a>
