@@ -27,7 +27,7 @@ const CharInfo = (props) => {
         getCharacter(charId)
             .then(onCharLoaded)
             .then(() => setProcess('confirmed'));
-    }
+    };
 
     const onCharLoaded = (char) => {
         setChar(char);

@@ -13,6 +13,6 @@ const AppBanner = () => {
             <img src={avengersLogo} alt="Avengers logo"/>
         </div>
     );
-}
+};
 
 export default AppBanner;
